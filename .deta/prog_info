@@ -1,0 +1,1 @@
+{"id":"18f6e1db-947f-45ff-8437-838b89130e60","space":7328,"runtime":"python3.7","name":"dayz","path":"2g0kw9","project":"a0zms5l8","account":"144798365827","region":"eu-central-1","deps":["flask"],"envs":null,"public":true,"log_level":"debug","cron":""}
