@@ -32,6 +32,7 @@
                     <th>QuantMax</th>
                     <th>Cost</th>
                     <th>Flags</th>
+                    <th>Category</th>
                     <th>Usage</th>
                     <th>Value</th>
                     <th>*Aktionen</th>
@@ -59,6 +60,7 @@
                             </tr>
                         </table>
                     </td>
+                    <td>{{ type.category }}</td>                    
                     <td>{{ type.usage }}</td>                    
                     <td>{{ type.value }}</td>
                     <td>
@@ -89,6 +91,7 @@
                             </tr>
                         </table>
                     </td>
+                    <td>{{ type.category }}</td>                    
                     <td>{{ type.usage }}</td>                    
                     <td>{{ type.value }}</td>
                     <td>
@@ -153,7 +156,6 @@
                     //return i == app_dayz.data.select_edit
                 },
                 toggleFlag: function(flagName) {
-                    console.log({flagName, select_edit: this.select_edit})
                     this.types[this.select_edit].flags[flagName] = !this.types[this.select_edit].flags[flagName]
                 }
             }

@@ -30,6 +30,11 @@ let type = class Type {
             let item = flagsAttr.item(i)
             this.flags[item.name] = item.value == '1'
         }
+        let categoryCollection = xml.getElementsByTagName('category')
+        this.category = ""
+        if (categoryCollection.length == 1) {
+            this.category = getNameAttribute(categoryCollection[0])
+        }
         this.usage = []
         let usageElems = xml.getElementsByTagName('usage')
         for (let i = 0; i < usageElems.length; ++i) {
