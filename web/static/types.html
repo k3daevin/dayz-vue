@@ -61,8 +61,17 @@
                         </table>
                     </td>
                     <td>{{ type.category }}</td>                    
-                    <td>{{ type.usage }}</td>                    
-                    <td>{{ type.value }}</td>
+                    <td>{{ type.usage }}</td>     
+                    <td>
+                        <table>
+                            <tr>
+                                <td v-for="(elem, j) in type.value" :key="j">
+                                    <p v-if="elem" class="bg-success text-white">{{ j + 1 }}</p>
+                                    <p v-else class="bg-light">{{ j + 1}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>               
                     <td>
                         <button v-on:click="setEditable(i)">
                             Edit
