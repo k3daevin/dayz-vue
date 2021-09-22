@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="js/type.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <button id="import-pfx-button">Laden</button>
@@ -36,31 +37,26 @@
                     <th>*Aktionen</th>
                 </tr>
             </thead>
-            <tbody v-for="(type, i) in types" :key="i" v-bind:type="type" v-bind:index="i">
+            <tbody v-for="(type, i) in types" :key="i" >
                 <tr v-if="isEditable(i) == false">
                     <!--
                     <td><mannebox :type="type" property="name" editable="type.editable"></mannebox></td>
                     -->
-                    <td>{{ type.name }}</td>
-                    <td>{{ type.lifetime }}</td>
-                    <td>{{ type.nominal }}</td>
-                    <td>{{ type.restock }}</td>
-                    <td>{{ type.min }}</td>
-                    <td>{{ type.quantmin }}</td>
-                    <td>{{ type.quantmax }}</td>
-                    <td>{{ type.cost }}</td>
+                    <td class="itemname">{{ type.name }}</td>
+                    <td class="number">{{ type.lifetime }}</td>
+                    <td class="number">{{ type.nominal }}</td>
+                    <td class="number">{{ type.restock }}</td>
+                    <td class="number">{{ type.min }}</td>
+                    <td class="number">{{ type.quantmin }}</td>
+                    <td class="number">{{ type.quantmax }}</td>
+                    <td class="number">{{ type.cost }}</td>
                     <td>
                         <table>
-                            <tbody>
-                                <tr>
-                                    <type-flag :value="type.flags.count_in_cargo" icon="bi bi-box" ></type-flag>
-                                    <type-flag :value="type.flags.count_in_hoarder" icon="bi bi-basket2" ></type-flag>
-                                    <type-flag :value="type.flags.count_in_map" icon="bi bi-map" ></type-flag>
-                                    <type-flag :value="type.flags.count_in_player" icon="bi bi-person" ></type-flag>
-                                    <type-flag :value="type.flags.crafted" icon="bi bi-wrench" ></type-flag>
-                                    <type-flag :value="type.flags.deloot" icon="bi bi-recycle" ></type-flag>
-                                </tr>
-                            </tbody>
+                            <tr>
+                                <td v-for="(elem, i) in flagIcons" :key="i">
+                                    <type-flag :value="type.flags[elem[0]]" :icon="elem[1]" ></type-flag>
+                                </td>
+                            </tr>
                         </table>
                     </td>
                     <td>{{ type.usage }}</td>                    
@@ -72,8 +68,34 @@
                     </td>
                 </tr>
                 <tr v-else>
-                    <td><input type="text" v-model="type.name" /></td>
-                    <td><input type="number" v-model="type.lifetime" /></td>
+                    <td><input type="text" v-model="type.name" class="itemname" /></td>
+                    <td><input type="number" v-model="type.lifetime" class="number" /></td>
+                    <td><input type="number" v-model="type.nominal" class="number" /></td>
+                    <td><input type="number" v-model="type.restock" class="number" /></td>
+                    <td><input type="number" v-model="type.min" class="number" /></td>
+                    <td><input type="number" v-model="type.quantmin" class="number" /></td>
+                    <td><input type="number" v-model="type.quantmax" class="number" /></td>
+                    <td><input type="number" v-model="type.cost" class="number" /></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td v-for="(elem, i) in flagIcons" :key="i">
+                                    <type-flag 
+                                        :value="type.flags[elem[0]]"
+                                        :icon="elem[1]"
+                                        v-on:click.native="toggleFlag(elem[0])"
+                                    ></type-flag>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>{{ type.usage }}</td>                    
+                    <td>{{ type.value }}</td>
+                    <td>
+                        <button v-on:click="setEditable(-1)">
+                            Done
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -113,6 +135,7 @@
             el: '#appdayz',
             data: {
                 types: [],
+                flagIcons: type.flagIcons,
                 select_edit: -1,
                 modal_type: null
             },
@@ -128,6 +151,10 @@
                 isEditable: function(i) {
                     return i == this.select_edit;
                     //return i == app_dayz.data.select_edit
+                },
+                toggleFlag: function(flagName) {
+                    console.log({flagName, select_edit: this.select_edit})
+                    this.types[this.select_edit].flags[flagName] = !this.types[this.select_edit].flags[flagName]
                 }
             }
         })

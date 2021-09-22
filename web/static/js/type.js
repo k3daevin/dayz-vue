@@ -1,4 +1,12 @@
 let type = class Type {
+    static flagIcons = [
+        ["count_in_cargo", "bi bi-box"],
+        ["count_in_hoarder", "bi bi-basket2"],
+        ["count_in_map", "bi bi-map"],
+        ["count_in_player", "bi bi-person"],
+        ["crafted", "bi bi-wrench"],
+        ["deloot", "bi bi-recycle"]
+    ]
     constructor(xml) {
         this.visible = true;
         this.editable = false;

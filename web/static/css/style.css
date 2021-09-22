@@ -1,3 +1,11 @@
 #file-input {
     display: none;
 }
+
+.number {
+    width: 5em;
+}
+
+.itemname {
+    width: 15em;
+}
