@@ -1,0 +1,160 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Types Editor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script src="js/type.js"></script>
+</head>
+<body>
+    <button id="import-pfx-button">Laden</button>
+    <input type="file" id="file-input" style="display: none;">
+    
+    
+    <div id="appdayz">
+        <div>
+            <p>{{ select_edit }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Lifetime</th>
+                    <th>Nominal</th>
+                    <th>Restock</th>
+                    <th>Min</th>
+                    <th>QuantMin</th>
+                    <th>QuantMax</th>
+                    <th>Cost</th>
+                    <th>Flags</th>
+                    <th>Usage</th>
+                    <th>Value</th>
+                    <th>*Aktionen</th>
+                </tr>
+            </thead>
+            <tbody v-for="(type, i) in types" :key="i" v-bind:type="type" v-bind:index="i">
+                <tr v-if="isEditable(i) == false">
+                    <!--
+                    <td><mannebox :type="type" property="name" editable="type.editable"></mannebox></td>
+                    -->
+                    <td>{{ type.name }}</td>
+                    <td>{{ type.lifetime }}</td>
+                    <td>{{ type.nominal }}</td>
+                    <td>{{ type.restock }}</td>
+                    <td>{{ type.min }}</td>
+                    <td>{{ type.quantmin }}</td>
+                    <td>{{ type.quantmax }}</td>
+                    <td>{{ type.cost }}</td>
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <type-flag :value="type.flags.count_in_cargo" icon="bi bi-box" ></type-flag>
+                                    <type-flag :value="type.flags.count_in_hoarder" icon="bi bi-basket2" ></type-flag>
+                                    <type-flag :value="type.flags.count_in_map" icon="bi bi-map" ></type-flag>
+                                    <type-flag :value="type.flags.count_in_player" icon="bi bi-person" ></type-flag>
+                                    <type-flag :value="type.flags.crafted" icon="bi bi-wrench" ></type-flag>
+                                    <type-flag :value="type.flags.deloot" icon="bi bi-recycle" ></type-flag>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>{{ type.usage }}</td>                    
+                    <td>{{ type.value }}</td>
+                    <td>
+                        <button v-on:click="setEditable(i)">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+                <tr v-else>
+                    <td><input type="text" v-model="type.name" /></td>
+                    <td><input type="number" v-model="type.lifetime" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <!--
+        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table v-if="select_edit != -1">
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input v-model="modal_type.name"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+    
+    <script>
+        let xml = {}
+        var app_dayz = new Vue({
+            el: '#appdayz',
+            data: {
+                types: [],
+                select_edit: -1,
+                modal_type: null
+            },
+            methods: {
+                openEdit: function() {                    
+                    //app_dayz.modal_type = app_dayz.types[app_dayz.select_edit]
+                    //$('#typeModal').modal('show')
+                    
+                },
+                setEditable: function(i) {
+                    this.select_edit = i
+                },
+                isEditable: function(i) {
+                    return i == this.select_edit;
+                    //return i == app_dayz.data.select_edit
+                }
+            }
+        })
+        
+        function laden(e) {
+            let file = e.target.files[0];
+            let reader = new FileReader();
+            reader.onload = onFileLoaded;
+            reader.readAsText(file);
+        }
+        
+        function onFileLoaded (e) {
+            let text = e.target.result
+            let xmlparser = new DOMParser();
+            xml = xmlparser.parseFromString(text, "application/xml")
+            let types = xml.getElementsByTagName('type')
+            for (let i = 0; i < types.length; i++) {
+                app_dayz.types.push(new type(types[i]))
+            }
+        }
+        
+        $(function () {
+            $('#import-pfx-button').click(function(e) {
+                $('#file-input').click();
+            });
+            $('#file-input').change(laden);
+        });
+    </script>
+</body>
+</html>
