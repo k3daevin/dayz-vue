@@ -40,10 +40,12 @@ let type = class Type {
         for (let i = 0; i < usageElems.length; ++i) {
             this.usage.push(getNameAttribute(usageElems[i]))
         }
-        this.value = []
+        this.value = Array(4).fill(false)
         let valueElems = xml.getElementsByTagName('value')
         for (let i = 0; i < valueElems.length; ++i) {
-            this.value.push(getNameAttribute(valueElems[i]))
+            let string = getNameAttribute(valueElems[i])
+            let tier = parseInt(string.slice(-1))
+            this.value[tier-1] = true
         }
 
     }
@@ -61,7 +63,10 @@ Vue.component('type-flag', {
         </div>
     </td>
     `
-  })
+})
+Vue.component('value-flag', {
+    props: ['icon']
+})
 Vue.component('mannebox', {
     props: ['type', 'property', 'editable'],
     template : `
