@@ -54,21 +54,20 @@ let type = class Type {
 Vue.component('value-tier', {
     props: {
         tier: Number,
-        value: Array
+        value: Array,
+        disabled: {
+            type: Boolean,
+            default: false
+        }
     },
     template: `
-    <p v-if="value[tier]"
-        class="bg-success text-white"
-        style="width: 1.5em; height: 1.5em;text-align: center;"
-    >
-        {{ tier + 1}}
-    </p>
-    <p v-else
-        class="bg-light text-dark"
-        style="width: 1.5em; height: 1.5em;text-align: center;"
-    >
-        {{ tier + 1}}
-    </p>
+    <div>
+        {{tier + 1}}: <input
+            type="checkbox"
+            v-model="value[tier]"
+            v-bind:disabled="disabled"
+        ></input>
+    </div>
     `
 })
 

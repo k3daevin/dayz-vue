@@ -78,6 +78,8 @@
                                     <value-tier
                                         :tier="j"
                                         :value="type.value"
+                                        aria-disabled="true"
+                                        :disabled=true
                                     ></value-tier>
                                 </td>
                             </tr>
@@ -123,7 +125,6 @@
                                     <value-tier
                                         :tier="j"
                                         :value="type.value"
-                                        v-on:click.native="toggleUsage(j)"
                                     ></value-tier>
                                 </td>
                             </tr>
