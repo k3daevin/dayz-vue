@@ -54,19 +54,11 @@ let type = class Type {
 Vue.component('type-flag', {
     props: ['icon', 'value'],
     template: `
-    <td>
-        <div v-if="value">
-            <b :class="icon" />            
-        </div>
-        <div v-else>
-            <i :class="icon" style="color:lightgrey;"/>
-        </div>
-    </td>
+    <b :class="icon" v-if="value" />            
+    <i :class="icon" style="color:lightgrey;" v-else />
     `
 })
-Vue.component('value-flag', {
-    props: ['icon']
-})
+
 Vue.component('mannebox', {
     props: ['type', 'property', 'editable'],
     template : `

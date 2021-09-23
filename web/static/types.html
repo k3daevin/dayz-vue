@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -56,6 +57,7 @@
                             <tr>
                                 <td v-for="(elem, i) in flagIcons" :key="i">
                                     <type-flag :value="type.flags[elem[0]]" :icon="elem[1]" ></type-flag>
+                                    <!-- <i v-bind:class="elem[1]" -->
                                 </td>
                             </tr>
                         </table>
@@ -66,8 +68,11 @@
                         <table>
                             <tr>
                                 <td v-for="(elem, j) in type.value" :key="j">
-                                    <p v-if="elem" class="bg-success text-white">{{ j + 1 }}</p>
-                                    <p v-else class="bg-light">{{ j + 1}}</p>
+
+                                    <p v-bind:class="elem ? 'bg-success text-white' : 'bg-light'"
+                                        style="width: 1.5em; height: 1.5em;text-align: center;">
+                                        {{ j + 1 }}
+                                    </p>
                                 </td>
                             </tr>
                         </table>
