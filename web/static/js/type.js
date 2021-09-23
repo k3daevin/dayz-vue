@@ -51,11 +51,32 @@ let type = class Type {
     }
 }
 
+Vue.component('value-tier', {
+    props: {
+        tier: Number,
+        value: Array
+    },
+    template: `
+    <p v-if="value[tier]"
+        class="bg-success text-white"
+        style="width: 1.5em; height: 1.5em;text-align: center;"
+    >
+        {{ tier + 1}}
+    </p>
+    <p v-else
+        class="bg-light text-dark"
+        style="width: 1.5em; height: 1.5em;text-align: center;"
+    >
+        {{ tier + 1}}
+    </p>
+    `
+})
+
 Vue.component('type-flag', {
     props: ['icon', 'value'],
     template: `
     <b :class="icon" v-if="value" />            
-    <i :class="icon" style="color:lightgrey;" v-else />
+    <i :class="icon" class="text-muted" v-else />
     `
 })
 

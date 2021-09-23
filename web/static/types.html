@@ -14,14 +14,18 @@
 </head>
 <body>
     <button id="import-pfx-button">Laden</button>
-    <input type="file" id="file-input" style="display: none;">
-    
+    <input type="file" id="file-input" style="display: none;" />
+
     
     <div id="appdayz">
+        <div hidden>
+            <label for="darkmodeCheckbox">Darkmode:</label>
+            <input type="checkbox" v-model="darkmode" id="darkmodeCheckbox" />
+        </div>
         <div>
             <p>{{ select_edit }}</p>
         </div>
-        <table class="tableFixHead">
+        <table class="tableFixHead table table-hover" :class="darkmodeClass">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -40,6 +44,9 @@
                 </tr>
             </thead>
             <tbody v-for="(type, i) in types" :key="i" >
+
+                <!-- BEGIN ISEDITABLE == false -->
+
                 <tr v-if="isEditable(i) == false">
                     <!--
                     <td><mannebox :type="type" property="name" editable="type.editable"></mannebox></td>
@@ -68,11 +75,10 @@
                         <table>
                             <tr>
                                 <td v-for="(elem, j) in type.value" :key="j">
-
-                                    <p v-bind:class="elem ? 'bg-success text-white' : 'bg-light'"
-                                        style="width: 1.5em; height: 1.5em;text-align: center;">
-                                        {{ j + 1 }}
-                                    </p>
+                                    <value-tier
+                                        :tier="j"
+                                        :value="type.value"
+                                    ></value-tier>
                                 </td>
                             </tr>
                         </table>
@@ -83,7 +89,10 @@
                         </button>
                     </td>
                 </tr>
-                <tr v-else>
+
+                <!-- ELSE ISEDITABLE == false -->
+
+                <tr class="table-info" v-else>
                     <td><input type="text" v-model="type.name" class="itemname" /></td>
                     <td><input type="number" v-model="type.lifetime" class="number" /></td>
                     <td><input type="number" v-model="type.nominal" class="number" /></td>
@@ -95,7 +104,7 @@
                     <td>
                         <table>
                             <tr>
-                                <td v-for="(elem, i) in flagIcons" :key="i">
+                                <td v-for="(elem, j) in flagIcons" :key="j">
                                     <type-flag 
                                         :value="type.flags[elem[0]]"
                                         :icon="elem[1]"
@@ -107,13 +116,29 @@
                     </td>
                     <td>{{ type.category }}</td>                    
                     <td>{{ type.usage }}</td>                    
-                    <td>{{ type.value }}</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td v-for="(elem, j) in type.value" :key="j">
+                                    <value-tier
+                                        :tier="j"
+                                        :value="type.value"
+                                        v-on:click.native="toggleUsage(j)"
+                                    ></value-tier>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                     <td>
                         <button v-on:click="setEditable(-1)">
                             Done
                         </button>
                     </td>
                 </tr>
+
+                <!-- END ISEDITABLE == false -->
+
+
             </tbody>
         </table>
         <!--
@@ -151,17 +176,18 @@
         var app_dayz = new Vue({
             el: '#appdayz',
             data: {
+                darkmode: false,
                 types: [],
                 flagIcons: type.flagIcons,
                 select_edit: -1,
                 modal_type: null
             },
+            computed: {
+                darkmodeClass: function() {
+                    return this.darkmode ? "table-dark" : "";
+                }
+            },
             methods: {
-                openEdit: function() {                    
-                    //app_dayz.modal_type = app_dayz.types[app_dayz.select_edit]
-                    //$('#typeModal').modal('show')
-                    
-                },
                 setEditable: function(i) {
                     this.select_edit = i
                 },
@@ -171,6 +197,9 @@
                 },
                 toggleFlag: function(flagName) {
                     this.types[this.select_edit].flags[flagName] = !this.types[this.select_edit].flags[flagName]
+                },
+                toggleUsage: function(tierIndex) {
+                    this.types[this.select_edit].value[tierIndex] = !this.types[this.select_edit].value[tierIndex]
                 }
             }
         })
