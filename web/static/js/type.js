@@ -7,6 +7,16 @@ let type = class Type {
         ["crafted", "bi bi-wrench"],
         ["deloot", "bi bi-recycle"]
     ]
+    static categories = [
+        '',
+        'weapons',
+        'food',
+        'clothes',
+        'containers',
+        'tools',
+        'vehiclesparts',
+        'explosives'
+    ]
     constructor(xml) {
         this.visible = true;
         this.editable = false;
