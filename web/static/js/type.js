@@ -106,6 +106,15 @@ Vue.component('type-flag', {
     `
 })
 
+Vue.component('usage-container', {
+    props: {
+        name: String
+    },
+    template: `
+    <p class="border rounded">{{ name }}</p>
+    `
+})
+
 Vue.component('mannebox', {
     props: ['type', 'property', 'editable'],
     template : `

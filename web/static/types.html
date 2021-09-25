@@ -62,7 +62,7 @@
                     <td>
                         <table>
                             <tr>
-                                <td v-for="(elem, i) in flagIcons" :key="i">
+                                <td v-for="(elem, j) in flagIcons" :key="j">
                                     <type-flag :value="type.flags[elem[0]]" :icon="elem[1]" ></type-flag>
                                     <!-- <i v-bind:class="elem[1]" -->
                                 </td>
@@ -70,7 +70,10 @@
                         </table>
                     </td>
                     <td>{{ type.category }}</td>                    
-                    <td>{{ type.usage }}</td>     
+                    <td>
+                        <usage-container v-for="(elem, j) in type.usage" :key="j" :name="elem">
+                        </usage-container>
+                        </td>     
                     <td>
                         <table>
                             <tr>
@@ -93,6 +96,7 @@
                 </tr>
 
                 <!-- ELSE ISEDITABLE == false -->
+                <!-- also ist editierbar!-->
 
                 <tr class="table-info" v-else>
                     <td><input type="text" v-model="type.name" class="itemname" /></td>
