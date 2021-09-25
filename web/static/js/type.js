@@ -89,11 +89,13 @@ Vue.component('value-tier', {
     },
     template: `
     <div>
-    {{tier + 1}}: <input
-    type="checkbox"
-    v-model="value[tier]"
-    v-bind:disabled="disabled"
-    ></input>
+        {{tier + 1}}:
+        <input
+            type="checkbox"
+            v-model="value[tier]"
+            v-bind:disabled="disabled"
+        >
+        </input>
     </div>
     `
 })
@@ -108,10 +110,32 @@ Vue.component('type-flag', {
 
 Vue.component('usage-container', {
     props: {
-        name: String
+        name: String,
+        index: {
+            type: Number,
+            default: -1
+        },
+        deletable: {
+            type: Boolean,
+            default: false
+        },
+        callback: {
+            type: Function,
+            default: (x)=>{}
+        }
     },
     template: `
-    <p class="border rounded">{{ name }}</p>
+    <div class="border rounded">
+        <span 
+            class="bi bi-trash text-right"
+            v-if="deletable"
+            v-on:click="callback(index)"
+        >
+        </span>
+        <span class="text-left">
+            {{ name }}
+        </span>
+    </div>
     `
 })
 

@@ -71,7 +71,11 @@
                     </td>
                     <td>{{ type.category }}</td>                    
                     <td>
-                        <usage-container v-for="(elem, j) in type.usage" :key="j" :name="elem">
+                        <usage-container 
+                            v-for="(elem, j) in type.usage"
+                            :key="j"
+                            :name="elem"
+                        >
                         </usage-container>
                         </td>     
                     <td>
@@ -83,7 +87,8 @@
                                         :value="type.value"
                                         aria-disabled="true"
                                         :disabled=true
-                                    ></value-tier>
+                                    >
+                                    </value-tier>
                                 </td>
                             </tr>
                         </table>
@@ -127,7 +132,26 @@
                             </option>
                         </select>
                     </td>                    
-                    <td>{{ type.usage }}</td>                    
+                    <td>
+                        <usage-container
+                            v-for="(elem, j) in type.usage"
+                            :key="j"
+                            :name="elem"
+                            :deletable="true"
+                            :index="j"
+                            :callback="deleteUsage"
+                        >
+                        </usage-container>
+                        <select v-on:change="selectUsage">
+                            <option value=""></option>
+                            <option
+                                v-for="(elem, j) in otherUsages"
+                                :value="elem"
+                            >
+                                {{ elem }}
+                            </option>
+                        </select>
+                    </td>                    
                     <td>
                         <table>
                             <tr>
@@ -197,6 +221,12 @@
             computed: {
                 darkmodeClass: function() {
                     return this.darkmode ? "table-dark" : "";
+                },
+                otherUsages: function() {
+                    let other = type.usages.filter(
+                        (el) => this.types[this.select_edit].usage.includes(el) == false
+                    )
+                    return other
                 }
             },
             methods: {
@@ -210,8 +240,16 @@
                 toggleFlag: function(flagName) {
                     this.types[this.select_edit].flags[flagName] = !this.types[this.select_edit].flags[flagName]
                 },
-                toggleUsage: function(tierIndex) {
-                    this.types[this.select_edit].value[tierIndex] = !this.types[this.select_edit].value[tierIndex]
+                deleteUsage: function(index) {
+                    this.types[this.select_edit].usage.splice(index, 1)
+                },
+                selectUsage: function(event) {
+                    console.log(event)
+                    let value = event.target.value
+                    if (value !== "") {
+                        this.types[this.select_edit].usage.push(value)
+                        event.target.value = ""
+                    }
                 }
             }
         })
