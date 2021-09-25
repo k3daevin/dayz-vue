@@ -17,6 +17,23 @@ let type = class Type {
         'vehiclesparts',
         'explosives'
     ]
+    static usages = [
+        'Military',
+        'Police',
+        'Hunting',
+        'Town',
+        'Village',
+        'Farm',
+        'Medic',
+        'Firefighter',
+        'Coast',
+        'School',
+        'Industrial',
+        'Office',
+        'SeasonalEvent',
+        'Lunapark',
+        'Prison'
+    ]
     constructor(xml) {
         this.visible = true;
         this.editable = false;
@@ -57,7 +74,7 @@ let type = class Type {
             let tier = parseInt(string.slice(-1))
             this.value[tier-1] = true
         }
-
+        
     }
 }
 
@@ -72,11 +89,11 @@ Vue.component('value-tier', {
     },
     template: `
     <div>
-        {{tier + 1}}: <input
-            type="checkbox"
-            v-model="value[tier]"
-            v-bind:disabled="disabled"
-        ></input>
+    {{tier + 1}}: <input
+    type="checkbox"
+    v-model="value[tier]"
+    v-bind:disabled="disabled"
+    ></input>
     </div>
     `
 })
@@ -93,10 +110,10 @@ Vue.component('mannebox', {
     props: ['type', 'property', 'editable'],
     template : `
     <div v-if="editable">
-      <input v-model="type[property]"></input>
+    <input v-model="type[property]"></input>
     </div>
     <div v-else>
-      {{ type[property] }}
+    {{ type[property] }}
     </div>
     `
 })
