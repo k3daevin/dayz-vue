@@ -8,3 +8,8 @@ let filterDefinition = class FilterDefinition {
         return this.binary_operator(obj[this.property], this.value)
     }
 }
+
+let binaryOperators = {
+    '<': (objvalue, defvalue) => objvalue < defvalue
+    
+}

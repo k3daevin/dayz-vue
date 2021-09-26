@@ -5,7 +5,7 @@ let type = class Type {
         ["count_in_map", "bi bi-map"],
         ["count_in_player", "bi bi-person"],
         ["crafted", "bi bi-wrench"],
-        ["deloot", "bi bi-recycle"]
+        ["deloot", "bi bi-lightning"]
     ]
     static categories = [
         '',
