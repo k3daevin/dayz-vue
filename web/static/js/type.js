@@ -103,8 +103,20 @@ Vue.component('value-tier', {
 Vue.component('type-flag', {
     props: ['icon', 'value'],
     template: `
-    <b :class="icon" v-if="value" />            
-    <i :class="icon" class="text-muted" v-else />
+    <div>
+        <b
+            :class="icon"
+            class="h4"
+            :title="value"
+            v-if="value"
+        />            
+        <i
+            :class="icon"
+            class="h4 text-muted"
+            :title="value"
+            v-else
+        />
+    </div>
     `
 })
 
