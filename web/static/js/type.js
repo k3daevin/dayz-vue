@@ -93,9 +93,15 @@ Vue.component('value-tier', {
         <input
             type="checkbox"
             v-model="value[tier]"
-            v-bind:disabled="disabled"
+            v-if="disabled == false"
         >
         </input>
+        <i 
+            class="bi"
+            :class="value[tier] ? 'bi-check2' : 'bi-x'"
+            v-else
+        >
+        </i>
     </div>
     `
 })
@@ -106,13 +112,13 @@ Vue.component('type-flag', {
     <div>
         <b
             :class="icon"
-            class="h4"
+            class="h4 text-primary"
             :title="value"
             v-if="value"
         />            
         <i
             :class="icon"
-            class="h4 text-muted"
+            class="h4 text-secondary"
             :title="value"
             v-else
         />
